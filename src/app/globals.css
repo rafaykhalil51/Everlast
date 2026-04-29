@@ -53,3 +53,29 @@ h3 {
   transform: translateY(0);
 }
 
+.everlast-strip-big {
+  display: inline-block;
+  min-width: 200%;
+  animation: everlastStripRun 46s linear infinite;
+  font-family: var(--font-brand-display), "Segoe UI", sans-serif;
+  font-size: clamp(2.2rem, 8vw, 6rem);
+  line-height: 0.95;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  background: linear-gradient(90deg, rgba(29, 94, 168, 0.55), rgba(67, 182, 73, 0.56), rgba(29, 94, 168, 0.55));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 8px 28px rgba(8, 26, 46, 0.2);
+  filter: saturate(1.1);
+}
+
+@keyframes everlastStripRun {
+  0% {
+    transform: translate3d(0, 18%, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 18%, 0);
+  }
+}
+

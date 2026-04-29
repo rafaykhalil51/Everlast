@@ -32,6 +32,7 @@ export default function EverlastScrollExperience() {
     ["Home", "#top"],
     ["About Us", "#about"],
     ["Products", "#products"],
+    ["Door Types", "#door-types"],
     ["Colors", "#colors"],
     ["Certifications", "#certifications"],
     ["Testimonials", "#testimonials"],
@@ -335,6 +336,7 @@ export default function EverlastScrollExperience() {
             GET A QUOTE
           </button>
         </div>
+
       </header>
 
       {/* Scroll story */}
@@ -593,6 +595,70 @@ export default function EverlastScrollExperience() {
           </section>
 
           <section
+            id="door-types"
+            data-story
+            className="story-section min-h-screen px-4 flex items-center"
+          >
+            <div className="mx-auto max-w-6xl w-full">
+              <h2 className="text-white font-extrabold text-3xl md:text-4xl">
+                Types of Doors
+              </h2>
+              <p className="text-white/90 mt-3 leading-7 max-w-3xl">
+                Select from big entrance doors, compact space-saving doors, and stylish designer
+                doors for modern projects.
+              </p>
+              <div className="mt-10 grid md:grid-cols-5 gap-6">
+                <div className="md:col-span-3 rounded-3xl border border-sky-100 bg-white/94 p-6">
+                  <img
+                    src="/frames/frame_31_delay-0.041s.png"
+                    alt="Big Door Type"
+                    className="h-64 md:h-72 w-full rounded-2xl object-cover"
+                    loading="lazy"
+                  />
+                  <div className="mt-4 text-slate-900 text-2xl font-extrabold">Big Door Type</div>
+                  <div className="text-slate-700 font-semibold mt-1">Grand Entrance Door</div>
+                  <div className="text-slate-700 mt-3 leading-7">
+                    Wide-profile designer doors for premium main entrances with stronger visual
+                    impact and enhanced weather sealing.
+                  </div>
+                </div>
+
+                <div className="md:col-span-2 grid gap-6">
+                  {[
+                    {
+                      title: "Small Door Type",
+                      subtitle: "Compact Utility Door",
+                      desc: "Space-efficient doors for interior zones, kitchens, and service areas.",
+                      image: "/frames/frame_52_delay-0.041s.png",
+                    },
+                    {
+                      title: "Stylish Door Type",
+                      subtitle: "Designer Modern Door",
+                      desc: "Contemporary patterns and finishes for a clean and elegant look.",
+                      image: "/frames/frame_78_delay-0.041s.png",
+                    },
+                  ].map((door) => (
+                    <div
+                      key={door.title}
+                      className="rounded-3xl border border-sky-100 bg-white/92 p-5"
+                    >
+                      <img
+                        src={door.image}
+                        alt={door.title}
+                        className="h-36 w-full rounded-2xl object-cover"
+                        loading="lazy"
+                      />
+                      <div className="mt-3 text-slate-900 text-lg font-extrabold">{door.title}</div>
+                      <div className="text-slate-700 font-semibold mt-1">{door.subtitle}</div>
+                      <div className="text-slate-700 mt-2 leading-7">{door.desc}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section
             id="certifications"
             data-story
             className="story-section min-h-screen px-4 flex items-center"
@@ -722,6 +788,19 @@ export default function EverlastScrollExperience() {
             </div>
           </section>
         </main>
+      </div>
+
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[5] overflow-hidden">
+        <div className="everlast-strip-big whitespace-nowrap">
+          <span className="inline-block px-16 uppercase">
+            Everlast Plastic · Everlast Plastic · Everlast Plastic · Everlast Plastic ·
+            Everlast Plastic · Everlast Plastic · Everlast Plastic · Everlast Plastic ·
+          </span>
+          <span className="inline-block px-16 uppercase">
+            Everlast Plastic · Everlast Plastic · Everlast Plastic · Everlast Plastic ·
+            Everlast Plastic · Everlast Plastic · Everlast Plastic · Everlast Plastic ·
+          </span>
+        </div>
       </div>
     </div>
   );
