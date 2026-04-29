@@ -28,6 +28,47 @@ export default function EverlastScrollExperience() {
     []
   );
   const [logoSrcIndex, setLogoSrcIndex] = useState(0);
+  const navItems = [
+    ["Home", "#top"],
+    ["About Us", "#about"],
+    ["Products", "#products"],
+    ["Colors", "#colors"],
+    ["Certifications", "#certifications"],
+    ["Testimonials", "#testimonials"],
+    ["Contact Us", "#contact"],
+  ] as const;
+  const productCards = [
+    {
+      title: "Sliding Door",
+      desc: "Smooth-glide profiles with weatherproof sealing for modern openings.",
+      image: "/frames/frame_10_delay-0.041s.png",
+    },
+    {
+      title: "Sliding Window",
+      desc: "Space-saving window systems built for insulation and daily durability.",
+      image: "/frames/frame_24_delay-0.041s.png",
+    },
+    {
+      title: "Openable Door",
+      desc: "Secure door frames with strong hinges, locking options, and acoustic comfort.",
+      image: "/frames/frame_40_delay-0.041s.png",
+    },
+    {
+      title: "Openable Window",
+      desc: "Ventilation-focused window design with tight closure and low maintenance.",
+      image: "/frames/frame_57_delay-0.041s.png",
+    },
+    {
+      title: "Laminated Wooden Texture Colors",
+      desc: "Premium wooden-finish laminates for elevated architectural style.",
+      image: "/frames/frame_73_delay-0.041s.png",
+    },
+    {
+      title: "Solid Colors",
+      desc: "Minimal, fade-resistant finishes tailored for contemporary projects.",
+      image: "/frames/frame_89_delay-0.041s.png",
+    },
+  ] as const;
 
   const scrollVh = useMemo(() => {
     if (!frameFiles.length) return 600;
@@ -227,7 +268,7 @@ export default function EverlastScrollExperience() {
       >
         <div
           className="mx-auto max-w-6xl px-4 flex items-center justify-between"
-          style={{ paddingTop: isHeaderCompact ? 3 : 10, paddingBottom: isHeaderCompact ? 3 : 10 }}
+          style={{ paddingTop: isHeaderCompact ? 5 : 12, paddingBottom: isHeaderCompact ? 5 : 12 }}
         >
           <div className="flex items-center gap-2">
             {logoOk ? (
@@ -246,7 +287,7 @@ export default function EverlastScrollExperience() {
                   }
                 }}
                 style={{
-                  width: isHeaderCompact ? "clamp(82px, 10vw, 126px)" : "clamp(152px, 18vw, 260px)",
+                  width: isHeaderCompact ? "clamp(92px, 11vw, 138px)" : "clamp(166px, 19vw, 282px)",
                   height: "auto",
                   objectFit: "contain",
                   opacity: isHeaderCompact ? 0.9 : 1,
@@ -263,13 +304,26 @@ export default function EverlastScrollExperience() {
             )}
           </div>
 
+          <nav className="hidden lg:flex items-center gap-4 xl:gap-5">
+            {navItems.map(([label, href]) => (
+              <a
+                key={href}
+                href={href}
+                className="font-semibold text-slate-700 hover:text-slate-900 transition-colors"
+                style={{ fontSize: isHeaderCompact ? 12 : 13 }}
+              >
+                {label}
+              </a>
+            ))}
+          </nav>
+
           <button
             className="rounded-full text-sm font-semibold text-white transition"
             style={{
               backgroundColor: accentHex,
               boxShadow: "0 14px 44px rgba(29,94,168,0.28)",
-              padding: isHeaderCompact ? "4px 11px" : "10px 21px",
-              fontSize: isHeaderCompact ? 11 : 15,
+              padding: isHeaderCompact ? "5px 13px" : "11px 23px",
+              fontSize: isHeaderCompact ? 12 : 15,
               lineHeight: 1.2,
               opacity: isHeaderCompact ? 0.9 : 1,
             }}
@@ -377,32 +431,30 @@ export default function EverlastScrollExperience() {
               </p>
 
               <div className="mt-10 grid md:grid-cols-3 gap-6">
-                {[
-                  {
-                    title: "uPVC Profiles",
-                    desc: "High-Quality Window & Door Systems. Engineered for durability, insulation, and modern aesthetics.",
-                  },
-                  {
-                    title: "Advanced Piping Solutions",
-                    desc: "Reliable Pipes for Every Application. From PPRC to HDPE and CPVC designed for pressure and long usage.",
-                  },
-                  {
-                    title: "Modern Wall Panels",
-                    desc: "Stylish & Durable Interior Solutions. Maintenance-free, moisture-resistant, and built to last.",
-                  },
-                ].map((c) => (
+                {productCards.map((c) => (
                   <div
                     key={c.title}
                     className="rounded-3xl border border-sky-100 bg-white/90 p-6"
                     style={{ boxShadow: "0 18px 60px rgba(0,0,0,0.28)" }}
                   >
+                    <img
+                      src={c.image}
+                      alt={c.title}
+                      className="h-36 w-full rounded-2xl object-cover"
+                      loading="lazy"
+                    />
                     <div
-                      className="text-slate-900 font-bold text-lg"
-                      style={{ textShadow: "0 10px 40px rgba(0,0,0,0.45)" }}
+                      className="text-slate-900 font-bold text-lg mt-4"
                     >
                       {c.title}
                     </div>
                     <div className="text-slate-700 mt-3 leading-7">{c.desc}</div>
+                    <button
+                      className="mt-4 rounded-full px-4 py-2 text-xs font-bold text-white"
+                      style={{ backgroundColor: brandBlue }}
+                    >
+                      Read More
+                    </button>
                   </div>
                 ))}
               </div>
@@ -475,31 +527,121 @@ export default function EverlastScrollExperience() {
           >
             <div className="mx-auto max-w-6xl w-full">
               <h2 className="text-white font-extrabold text-3xl md:text-4xl">
-                Our Awesome Services
+                Why Choose Our uPVC Solutions
               </h2>
               <p className="text-white/90 mt-3 leading-7">
-                Building a more competitive business sector with premium building solutions.
+                Engineered for durability, efficiency, and long-term performance across climates.
               </p>
 
               <div className="mt-10 grid md:grid-cols-2 gap-6">
                 {[
-                  "SOLID WALL PANELS",
-                  "UPVC Profiles",
-                  "UPVC Ace Doors",
-                  "PPRC Pipes",
-                  "HDPE Pipes",
-                  "UPVC Pipes",
-                  "CPVC pipes",
-                  "Garden Thread Pipes",
+                  "Pollution Resistant",
+                  "Strength & Durability",
+                  "Noise-proof",
+                  "Corrosion-proof",
+                  "Energy Saving",
+                  "Highly Secure",
+                  "Recyclable",
+                  "Weatherproof",
+                  "Lead Free",
+                  "Easy to Install",
+                  "Termite Resistant",
+                  "Fireproof",
                 ].map((s) => (
                   <div
                     key={s}
-                    className="rounded-3xl border border-sky-100 bg-white/90 p-6"
+                    className="rounded-3xl border border-sky-100 bg-white/90 p-5"
                   >
                     <div className="text-slate-900 font-extrabold tracking-wide">{s}</div>
-                    <div className="text-slate-700 mt-2 leading-7">
-                      Built for durability, safety, and long-term performance.
-                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section
+            id="colors"
+            data-story
+            className="story-section min-h-screen px-4 flex items-center"
+          >
+            <div className="mx-auto max-w-6xl w-full">
+              <h2 className="text-white font-extrabold text-3xl md:text-4xl">
+                Signature Color Collection
+              </h2>
+              <p className="text-white/90 mt-3 leading-7 max-w-3xl">
+                Premium laminated textures and solid tones to match modern and classic spaces.
+              </p>
+              <div className="mt-10 grid md:grid-cols-3 gap-6">
+                {[
+                  ["Nussbaum", "#5b3c29"],
+                  ["Jet Black", "#18181b"],
+                  ["Golden Oak", "#9a6a38"],
+                  ["Anthracite Grey", "#4a4f58"],
+                  ["Premium White", "#f4f4f5"],
+                  ["Premium Black", "#09090b"],
+                ].map(([name, swatch]) => (
+                  <div key={name} className="rounded-3xl border border-sky-100 bg-white/92 p-5">
+                    <div
+                      className="h-28 rounded-2xl border border-black/10"
+                      style={{ backgroundColor: swatch }}
+                    />
+                    <div className="mt-3 text-slate-900 font-bold">{name}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section
+            id="certifications"
+            data-story
+            className="story-section min-h-screen px-4 flex items-center"
+          >
+            <div className="mx-auto max-w-6xl w-full">
+              <h2 className="text-white font-extrabold text-3xl md:text-4xl">
+                Certifications &amp; Accreditations
+              </h2>
+              <p className="text-white/90 mt-3 leading-7 max-w-3xl">
+                Our production and QA workflows follow recognized standards for reliability,
+                safety, and consistent batch quality.
+              </p>
+              <div className="mt-10 grid md:grid-cols-2 gap-6">
+                {[
+                  ["ISO Quality Management", "Documented process control from raw input to finished profiles."],
+                  ["Lead-Free Compliance", "Safer profile chemistry aligned with international safety requirements."],
+                  ["Weather Performance Testing", "Validated resistance against heat, moisture, and UV exposure."],
+                  ["Security & Durability Benchmarks", "Hardware, frame strength, and lifecycle testing for long service."],
+                ].map(([title, desc]) => (
+                  <div key={title} className="rounded-3xl border border-sky-100 bg-white/92 p-6">
+                    <div className="text-slate-900 font-extrabold">{title}</div>
+                    <div className="text-slate-700 mt-2 leading-7">{desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section
+            id="testimonials"
+            data-story
+            className="story-section min-h-screen px-4 flex items-center"
+          >
+            <div className="mx-auto max-w-6xl w-full">
+              <h2 className="text-white font-extrabold text-3xl md:text-4xl">
+                What Clients Say
+              </h2>
+              <p className="text-white/90 mt-3 leading-7 max-w-3xl">
+                Feedback from contractors, architects, and homeowners we have worked with.
+              </p>
+              <div className="mt-10 grid md:grid-cols-3 gap-6">
+                {[
+                  ["Aftab Builders", "Excellent profile finish and timely delivery on our residential project."],
+                  ["Urban Arch Studio", "The texture options and quality consistency are genuinely impressive."],
+                  ["Nexa Homes", "Strong after-sales support and durable product performance over time."],
+                ].map(([client, quote]) => (
+                  <div key={client} className="rounded-3xl border border-sky-100 bg-white/92 p-6">
+                    <div className="text-slate-900 font-extrabold">{client}</div>
+                    <div className="mt-3 text-slate-700 leading-7">&ldquo;{quote}&rdquo;</div>
                   </div>
                 ))}
               </div>
