@@ -1,81 +1,279 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7fbff;
-  --foreground: #0b1220;
-  --accent: #43b649;
-  --accent2: #1d5ea8;
-  --brand-blue: #1d5ea8;
-  --brand-maroon: #5e1728;
+  /* Merged Everlast x Cinematic palette */
+  --obsidian: #0d0d0d;
+  --charcoal: #161618;
+  --ink: #1c1c1e;
+  --steel: #1d5ea8;
+  --steel-light: #4f8ed6;
+  --emerald: #43b649;
+  --emerald-light: #7fd685;
+  --gold: #c9a84c;
+  --gold-light: #e8c96d;
+  --ivory: #f5f2ee;
+  --warm-white: #fafaf8;
+  --fog: #8a8a8a;
+  --fog-soft: #b6b6b6;
+  --glass: rgba(255, 255, 255, 0.04);
+  --glass-strong: rgba(255, 255, 255, 0.08);
+
+  --background: var(--obsidian);
+  --foreground: var(--warm-white);
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-brand-body);
-  --font-mono: var(--font-geist-mono);
+  --color-obsidian: var(--obsidian);
+  --color-charcoal: var(--charcoal);
+  --color-ink: var(--ink);
+  --color-steel: var(--steel);
+  --color-emerald: var(--emerald);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-ivory: var(--ivory);
+  --color-warm-white: var(--warm-white);
+  --color-fog: var(--fog);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
+  --font-display: var(--font-display);
+  --font-grotesk: var(--font-grotesk);
 }
 
+* {
+  box-sizing: border-box;
+}
+
+html,
 body {
+  margin: 0;
+  padding: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-brand-body), "Segoe UI", sans-serif;
+  font-family: var(--font-body), Inter, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+}
+
+body.cursor-active {
+  cursor: none;
+}
+
+@media (max-width: 1024px), (pointer: coarse) {
+  body.cursor-active {
+    cursor: auto;
+  }
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--obsidian);
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
 }
 
 h1,
 h2,
-h3 {
-  font-family: var(--font-brand-display), "Segoe UI", sans-serif;
-  letter-spacing: 0.01em;
+h3,
+.font-display {
+  font-family: var(--font-display), "Cormorant Garamond", serif;
+  letter-spacing: -0.01em;
+  font-weight: 700;
 }
 
-/* Fullscreen background crossfade for the scroll images */
-.bg-frame {
-  position: absolute;
+.font-grotesk {
+  font-family: var(--font-grotesk), "DM Sans", "Inter", sans-serif;
+  letter-spacing: -0.005em;
+}
+
+.font-mono {
+  font-family: var(--font-mono), "JetBrains Mono", monospace;
+  letter-spacing: 0;
+}
+
+/* ─── Custom cursor ───────────────────────────────────── */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate3d(-50%, -50%, 0);
+  mix-blend-mode: difference;
+}
+
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: #fafaf8;
+  border-radius: 9999px;
+}
+
+.cursor-ring {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(250, 250, 248, 0.6);
+  border-radius: 9999px;
+  transition: width 0.25s var(--ease-expo), height 0.25s var(--ease-expo),
+    background-color 0.25s var(--ease-expo), border-color 0.25s var(--ease-expo);
+}
+
+.cursor-ring.is-hover {
+  width: 64px;
+  height: 64px;
+  background: rgba(201, 168, 76, 0.18);
+  border-color: var(--gold);
+}
+
+.cursor-ring.is-drag {
+  width: 76px;
+  height: 76px;
+  background: rgba(67, 182, 73, 0.18);
+  border-color: var(--emerald);
+}
+
+@media (max-width: 1024px), (pointer: coarse) {
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
+  }
+}
+
+/* ─── Scroll progress ─────────────────────────────────── */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--steel), var(--emerald), var(--gold));
+  z-index: 60;
+  transform-origin: 0 0;
+}
+
+/* ─── Page loader ─────────────────────────────────────── */
+.loader-shell {
+  position: fixed;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  background-color: #f7fff9;
+  z-index: 100;
+  background: var(--obsidian);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.story-section {
-  opacity: 0;
-  transform: translateY(28px);
-  transition:
-    opacity 800ms ease,
-    transform 800ms ease;
+/* ─── Section utilities ───────────────────────────────── */
+.section-dark {
+  background: var(--obsidian);
+  color: var(--warm-white);
 }
 
-.story-show {
-  opacity: 1;
-  transform: translateY(0);
+.section-mid {
+  background: var(--charcoal);
+  color: var(--warm-white);
 }
 
+.section-light {
+  background: var(--ivory);
+  color: var(--obsidian);
+}
+
+.glass-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-strong);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* ─── Marquee ─────────────────────────────────────────── */
+.marquee-track {
+  display: inline-flex;
+  gap: 4rem;
+  animation: marqueeRun 38s linear infinite;
+  white-space: nowrap;
+}
+
+.marquee-reverse {
+  animation-direction: reverse;
+}
+
+@keyframes marqueeRun {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* ─── Brand watermark strip ───────────────────────────── */
 .everlast-strip-big {
   display: inline-block;
   min-width: 200%;
-  animation: everlastStripRun 46s linear infinite;
-  font-family: var(--font-brand-display), "Segoe UI", sans-serif;
-  font-size: clamp(2.2rem, 8vw, 6rem);
+  animation: everlastStripRun 60s linear infinite;
+  font-family: var(--font-display), "Cormorant Garamond", serif;
+  font-size: clamp(3rem, 14vw, 12rem);
   line-height: 0.95;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  background: linear-gradient(90deg, rgba(29, 94, 168, 0.55), rgba(67, 182, 73, 0.56), rgba(29, 94, 168, 0.55));
-  -webkit-background-clip: text;
-  background-clip: text;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
   color: transparent;
-  text-shadow: 0 8px 28px rgba(8, 26, 46, 0.2);
-  filter: saturate(1.1);
+  -webkit-text-stroke: 1px rgba(250, 250, 248, 0.18);
 }
 
 @keyframes everlastStripRun {
   0% {
-    transform: translate3d(0, 18%, 0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translate3d(-50%, 18%, 0);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
+/* ─── Reveal underlines ───────────────────────────────── */
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s var(--ease-expo), left 0.3s var(--ease-expo);
+}
+.link-underline:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+/* ─── Reduce motion ───────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

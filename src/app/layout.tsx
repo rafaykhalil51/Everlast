@@ -1,27 +1,49 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Manrope, Syne } from "next/font/google";
+import {
+  Cormorant_Garamond,
+  DM_Sans,
+  Inter,
+  JetBrains_Mono,
+} from "next/font/google";
 import "./globals.css";
+import { LenisProvider } from "@/lib/lenis";
+import CustomCursor from "@/components/ui/CustomCursor";
+import ScrollProgress from "@/components/ui/ScrollProgress";
+import PageLoader from "@/components/ui/PageLoader";
+import Navbar from "@/components/ui/Navbar";
+import Footer from "@/components/sections/Footer";
 
-const brandBody = Manrope({
-  variable: "--font-brand-body",
+const display = Cormorant_Garamond({
+  variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const grotesk = DM_Sans({
+  variable: "--font-grotesk",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const brandDisplay = Syne({
-  variable: "--font-brand-display",
+const body = Inter({
+  variable: "--font-body",
   subsets: ["latin"],
-  weight: ["600", "700", "800"],
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+const mono = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
-  title: "Everlast Plastic - Scroll 3D",
-  description: "Everlast Plastic scroll-driven 3D storytelling website.",
+  title: {
+    default: "Everlast Plastic — Engineered uPVC Windows & Doors",
+    template: "%s · Everlast Plastic",
+  },
+  description:
+    "Everlast Plastic. Premium uPVC windows and doors crafted with European engineering — built for durability, comfort, and timeless architecture.",
 };
 
 export default function RootLayout({
@@ -32,9 +54,18 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${brandBody.variable} ${brandDisplay.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${display.variable} ${grotesk.variable} ${body.variable} ${mono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col bg-[var(--obsidian)] text-[var(--warm-white)]">
+        <PageLoader />
+        <CustomCursor />
+        <ScrollProgress />
+        <LenisProvider>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </LenisProvider>
+      </body>
     </html>
   );
 }
