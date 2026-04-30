@@ -62,7 +62,8 @@ export default function Navbar() {
                 style={{
                   width: scrolled ? "clamp(96px, 10vw, 138px)" : "clamp(140px, 14vw, 196px)",
                   height: "auto",
-                  filter: "brightness(1.05) drop-shadow(0 4px 18px rgba(0,0,0,0.4))",
+                  filter:
+                    "invert(1) hue-rotate(180deg) drop-shadow(0 4px 18px rgba(0,0,0,0.45))",
                   transition: "width .35s var(--ease-expo)",
                 }}
               />

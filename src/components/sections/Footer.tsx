@@ -25,7 +25,7 @@ export default function Footer() {
               src="/logo.png"
               alt={`${COMPANY.name} logo`}
               className="w-[220px] h-auto"
-              style={{ filter: "brightness(1.05)" }}
+              style={{ filter: "invert(1) hue-rotate(180deg)" }}
             />
           </Link>
           <p className="text-[var(--warm-white)]/65 max-w-md leading-7">

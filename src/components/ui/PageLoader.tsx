@@ -78,7 +78,10 @@ export default function PageLoader() {
                 scale: 1,
                 transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] },
               }}
-              style={{ filter: "drop-shadow(0 8px 28px rgba(255,255,255,0.08))" }}
+              style={{
+                filter:
+                  "invert(1) hue-rotate(180deg) drop-shadow(0 8px 28px rgba(255,255,255,0.08))",
+              }}
             />
             <div
               className="font-mono text-[11px] md:text-xs tracking-[0.4em] uppercase text-[var(--fog)] min-h-[1.5em]"
