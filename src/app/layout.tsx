@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import {
   Cormorant_Garamond,
   DM_Sans,
@@ -12,6 +12,7 @@ import ScrollProgress from "@/components/ui/ScrollProgress";
 import PageLoader from "@/components/ui/PageLoader";
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/sections/Footer";
+import { COMPANY } from "@/lib/constants";
 
 const display = Cormorant_Garamond({
   variable: "--font-display",
@@ -37,13 +38,98 @@ const mono = JetBrains_Mono({
   weight: ["400", "500", "600"],
 });
 
+export const viewport: Viewport = {
+  themeColor: "#0d0d0d",
+  colorScheme: "dark",
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
+  metadataBase: new URL(COMPANY.url),
   title: {
-    default: "Everlast Plastic — Engineered uPVC Windows & Doors",
+    default: "Everlast Plastic. Engineered uPVC Windows and Doors in Pakistan",
     template: "%s · Everlast Plastic",
   },
   description:
-    "Everlast Plastic. Premium uPVC windows and doors crafted with European engineering — built for durability, comfort, and timeless architecture.",
+    "Everlast Plastic manufactures premium uPVC windows and doors in Karachi, Pakistan. European engineering, multi chamber profiles, double glazing, and a 10 year performance warranty.",
+  applicationName: COMPANY.name,
+  keywords: [
+    "uPVC windows Pakistan",
+    "uPVC doors Pakistan",
+    "double glazed windows",
+    "energy efficient windows",
+    "noise reduction windows",
+    "Everlast Plastic",
+    "Karachi window manufacturer",
+    "European uPVC profiles",
+  ],
+  authors: [{ name: COMPANY.legalName, url: COMPANY.url }],
+  creator: COMPANY.legalName,
+  publisher: COMPANY.legalName,
+  category: "Building Materials",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    siteName: COMPANY.name,
+    title: "Everlast Plastic. Engineered uPVC Windows and Doors",
+    description:
+      "Premium uPVC windows and doors with European engineering. Crafted in Karachi, trusted across Pakistan.",
+    url: COMPANY.url,
+    locale: "en_PK",
+    images: [{ url: COMPANY.ogImage, width: 1200, height: 630, alt: COMPANY.name }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Everlast Plastic. Engineered uPVC Windows and Doors",
+    description: "Premium uPVC windows and doors with European engineering.",
+    images: [COMPANY.ogImage],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+    },
+  },
+  icons: { icon: "/favicon.ico" },
+};
+
+const organisationLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: COMPANY.legalName,
+  alternateName: COMPANY.name,
+  url: COMPANY.url,
+  logo: `${COMPANY.url}${COMPANY.logo}`,
+  foundingDate: String(COMPANY.founded),
+  email: COMPANY.email,
+  telephone: COMPANY.phone,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: COMPANY.address,
+    addressLocality: "Karachi",
+    addressCountry: "PK",
+  },
+  sameAs: [],
+};
+
+const websiteLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: COMPANY.name,
+  url: COMPANY.url,
+  inLanguage: "en-PK",
+  publisher: { "@type": "Organization", name: COMPANY.legalName },
+  potentialAction: {
+    "@type": "SearchAction",
+    target: `${COMPANY.url}/blog?q={search_term_string}`,
+    "query-input": "required name=search_term_string",
+  },
 };
 
 export default function RootLayout({
@@ -65,6 +151,14 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
         </LenisProvider>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organisationLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteLd) }}
+        />
       </body>
     </html>
   );

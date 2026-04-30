@@ -10,6 +10,11 @@ const HeroScene = dynamic(() => import("@/components/3d/HeroScene"), {
   loading: () => null,
 });
 
+const HeroProductShowcase = dynamic(
+  () => import("@/components/sections/HeroProductShowcase"),
+  { ssr: false, loading: () => null },
+);
+
 export default function Hero() {
   return (
     <section
@@ -130,14 +135,17 @@ export default function Hero() {
 
         <div className="lg:col-span-5 relative h-[60vh] md:h-[68vh]" data-cursor="drag">
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 z-0"
             style={{
               backgroundImage:
                 "radial-gradient(closest-side, rgba(201,168,76,0.18), transparent 70%)",
             }}
             aria-hidden
           />
-          <div className="absolute inset-0">
+          <div className="absolute inset-0 z-10">
+            <HeroProductShowcase />
+          </div>
+          <div className="absolute inset-0 z-20 pointer-events-none">
             <HeroScene />
           </div>
 

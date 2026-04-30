@@ -65,21 +65,21 @@ export default function About() {
             className="font-display text-4xl md:text-5xl lg:text-6xl leading-[1.05]"
           />
           <p className="text-[var(--obsidian)]/70 leading-7 max-w-xl">
-            {COMPANY.name} is a trusted manufacturer of high-quality building materials,
-            specializing in uPVC profiles and door systems. Our solutions combine European
-            engineering principles with regional craftsmanship — designed for durability,
+            {COMPANY.name} is a trusted manufacturer of high quality building materials,
+            specialising in uPVC profiles and door systems. Our solutions combine European
+            engineering principles with regional craftsmanship, designed for durability,
             energy efficiency, and timeless aesthetics.
           </p>
 
           <div className="border-l-2 border-[var(--gold)] pl-5 italic text-[var(--obsidian)]/80 max-w-xl">
-            “Quality isn’t an option for us — it’s the standard for every profile we deliver.”
+            &ldquo;Quality is not an option for us. It is the standard for every profile we deliver.&rdquo;
           </div>
 
           <a
-            href="#advantages"
+            href="/products"
             className="inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.24em] text-[var(--steel)] hover:text-[var(--obsidian)] transition-colors"
           >
-            Why choose us
+            Explore our products
             <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
           </a>
         </motion.div>

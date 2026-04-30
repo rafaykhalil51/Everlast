@@ -2,7 +2,6 @@
 
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
-import WindowFrame3D from "./WindowFrame3D";
 import MaterialParticles from "./MaterialParticles";
 
 export default function HeroScene() {
@@ -16,9 +15,6 @@ export default function HeroScene() {
       <Suspense fallback={null}>
         <fog attach="fog" args={["#0d0d0d", 8, 18]} />
         <MaterialParticles count={180} intensity={0.7} />
-        <group position={[0.1, -0.05, 0]} scale={1}>
-          <WindowFrame3D />
-        </group>
       </Suspense>
     </Canvas>
   );
