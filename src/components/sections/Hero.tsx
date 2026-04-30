@@ -10,8 +10,8 @@ const HeroScene = dynamic(() => import("@/components/3d/HeroScene"), {
   loading: () => null,
 });
 
-const HeroProductShowcase = dynamic(
-  () => import("@/components/sections/HeroProductShowcase"),
+const HeroProductScene = dynamic(
+  () => import("@/components/3d/HeroProductScene"),
   { ssr: false, loading: () => null },
 );
 
@@ -143,7 +143,7 @@ export default function Hero() {
             aria-hidden
           />
           <div className="absolute inset-0 z-10">
-            <HeroProductShowcase />
+            <HeroProductScene />
           </div>
           <div className="absolute inset-0 z-20 pointer-events-none">
             <HeroScene />

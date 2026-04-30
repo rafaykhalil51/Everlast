@@ -1,231 +1,309 @@
 "use client";
 
-import { useFrame, useThree } from "@react-three/fiber";
-import { Environment } from "@react-three/drei";
-import { useEffect, useMemo, useRef } from "react";
+import { useFrame } from "@react-three/fiber";
+import { useTexture } from "@react-three/drei";
+import { useMemo, useRef } from "react";
 import * as THREE from "three";
 
-type Props = {
-  scrollProgress?: number;
+const FRAME_COLOR = "#f5f5f1";
+const FRAME_DEPTH_COLOR = "#e6e6df";
+const GASKET_COLOR = "#0d0d0d";
+const REINFORCEMENT_COLOR = "#7e8a92";
+const WOOD_COLOR = "#c79a6b";
+
+type ChamberProps = {
+  position: [number, number, number];
+  size: [number, number, number];
 };
 
-const FRAME_COLOR = new THREE.Color("#f5f2ee");
-const ACCENT_COLOR = new THREE.Color("#c9a84c");
-const STEEL_COLOR = new THREE.Color("#1d5ea8");
-
-export default function WindowFrame3D({ scrollProgress = 0 }: Props) {
-  const groupRef = useRef<THREE.Group | null>(null);
-  const assembled = useRef(0);
-  const { camera, viewport } = useThree();
-  const pointer = useRef(new THREE.Vector2());
-
-  const frameMat = useMemo(
-    () =>
-      new THREE.MeshPhysicalMaterial({
-        color: FRAME_COLOR,
-        roughness: 0.42,
-        metalness: 0.08,
-        clearcoat: 0.7,
-        clearcoatRoughness: 0.18,
-      }),
-    []
-  );
-
-  const accentMat = useMemo(
-    () =>
-      new THREE.MeshStandardMaterial({
-        color: ACCENT_COLOR,
-        roughness: 0.32,
-        metalness: 0.85,
-        emissive: ACCENT_COLOR.clone().multiplyScalar(0.18),
-      }),
-    []
-  );
-
-  const handleMat = useMemo(
-    () =>
-      new THREE.MeshStandardMaterial({
-        color: new THREE.Color("#e6e6e6"),
-        roughness: 0.18,
-        metalness: 1,
-      }),
-    []
-  );
-
-  const glassMat = useMemo(
-    () =>
-      new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color("#dceeff"),
-        transmission: 0.95,
-        thickness: 0.4,
-        roughness: 0.05,
-        ior: 1.5,
-        clearcoat: 1,
-        clearcoatRoughness: 0.1,
-      }),
-    []
-  );
-
-  const steelMat = useMemo(
-    () =>
-      new THREE.MeshStandardMaterial({
-        color: STEEL_COLOR,
-        roughness: 0.5,
-        metalness: 0.4,
-      }),
-    []
-  );
-
-  useEffect(() => {
-    void viewport;
-    void camera;
-  }, [viewport, camera]);
-
-  useFrame((state, delta) => {
-    const target = 1; // assemble once when mounted
-    assembled.current = Math.min(1, assembled.current + delta * 0.7);
-
-    pointer.current.x += (state.pointer.x - pointer.current.x) * 0.06;
-    pointer.current.y += (state.pointer.y - pointer.current.y) * 0.06;
-
-    const g = groupRef.current;
-    if (!g) return;
-
-    const a = assembled.current;
-    g.children.forEach((child) => {
-      const data = child.userData as {
-        from?: THREE.Vector3;
-        to?: THREE.Vector3;
-        rotFrom?: THREE.Euler;
-        rotTo?: THREE.Euler;
-      };
-      if (data?.from && data?.to) {
-        child.position.lerpVectors(data.from, data.to, a);
+function FrameWithChambers({ position, size }: ChamberProps) {
+  const [w, h, d] = size;
+  const chambers = useMemo(() => {
+    // small inner cavities visible on the cut face
+    const arr: { x: number; y: number; w: number; h: number }[] = [];
+    const cellW = w / 4;
+    const cellH = h / 4;
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 4; j++) {
+        if ((i + j) % 2 === 0) continue;
+        arr.push({
+          x: -w / 2 + cellW / 2 + i * cellW,
+          y: -h / 2 + cellH / 2 + j * cellH,
+          w: cellW * 0.55,
+          h: cellH * 0.55,
+        });
       }
-      if (data?.rotFrom && data?.rotTo) {
-        child.rotation.x = THREE.MathUtils.lerp(data.rotFrom.x, data.rotTo.x, a);
-        child.rotation.y = THREE.MathUtils.lerp(data.rotFrom.y, data.rotTo.y, a);
-        child.rotation.z = THREE.MathUtils.lerp(data.rotFrom.z, data.rotTo.z, a);
-      }
-    });
-
-    const baseSpin = state.clock.elapsedTime * 0.08 + scrollProgress * 0.6;
-    g.rotation.y = baseSpin + pointer.current.x * 0.35;
-    g.rotation.x = -0.05 + pointer.current.y * -0.18;
-
-    void target;
-  });
-
-  // Dimensions
-  const W = 2.8;
-  const H = 3.2;
-  const D = 0.18;
-  const T = 0.18; // bar thickness
-
-  type PieceProps = {
-    pos: THREE.Vector3;
-    geom: [number, number, number];
-    mat: THREE.Material;
-    fromOffset: THREE.Vector3;
-  };
-
-  const pieces: PieceProps[] = [
-    // outer frame
-    { pos: new THREE.Vector3(0, H / 2 - T / 2, 0), geom: [W, T, D], mat: frameMat, fromOffset: new THREE.Vector3(0, 4, 0) },
-    { pos: new THREE.Vector3(0, -H / 2 + T / 2, 0), geom: [W, T, D], mat: frameMat, fromOffset: new THREE.Vector3(0, -4, 0) },
-    { pos: new THREE.Vector3(-W / 2 + T / 2, 0, 0), geom: [T, H, D], mat: frameMat, fromOffset: new THREE.Vector3(-4, 0, 0) },
-    { pos: new THREE.Vector3(W / 2 - T / 2, 0, 0), geom: [T, H, D], mat: frameMat, fromOffset: new THREE.Vector3(4, 0, 0) },
-    // mullion
-    { pos: new THREE.Vector3(0, 0, 0), geom: [T * 0.7, H - T * 2, D * 0.95], mat: frameMat, fromOffset: new THREE.Vector3(0, -6, 0) },
-    // accent bar
-    { pos: new THREE.Vector3(0, -H / 2 + T * 1.4, D * 0.55), geom: [W - T * 2, T * 0.18, D * 0.25], mat: accentMat, fromOffset: new THREE.Vector3(0, -8, 0) },
-  ];
-
-  const glassPanes = [
-    { pos: new THREE.Vector3(-W / 4 - T * 0.05, 0, D * 0.05), w: W / 2 - T * 1.5, h: H - T * 2.4 },
-    { pos: new THREE.Vector3(W / 4 + T * 0.05, 0, D * 0.05), w: W / 2 - T * 1.5, h: H - T * 2.4 },
-  ];
+    }
+    return arr;
+  }, [w, h]);
 
   return (
-    <>
-      <Environment preset="studio" environmentIntensity={0.55} />
-      <ambientLight intensity={0.35} />
-      <directionalLight position={[4, 6, 5]} intensity={1.1} color="#fff8e0" castShadow />
-      <pointLight position={[-3, 2, 4]} intensity={0.55} color="#dbeafe" />
+    <group position={position}>
+      {/* main body */}
+      <mesh castShadow receiveShadow>
+        <boxGeometry args={[w, h, d]} />
+        <meshStandardMaterial
+          color={FRAME_COLOR}
+          roughness={0.55}
+          metalness={0.05}
+        />
+      </mesh>
 
-      <group ref={groupRef} position={[0, 0, 0]}>
-        {pieces.map((p, i) => {
-          const userData = {
-            from: p.pos.clone().add(p.fromOffset),
-            to: p.pos.clone(),
-            rotFrom: new THREE.Euler(0.4, 0.6, 0),
-            rotTo: new THREE.Euler(0, 0, 0),
-          };
-          return (
-            <mesh
-              key={`piece-${i}`}
-              material={p.mat}
-              position={userData.from}
-              rotation={userData.rotFrom}
-              userData={userData}
-              castShadow
-              receiveShadow
-            >
-              <boxGeometry args={p.geom} />
-            </mesh>
-          );
-        })}
-
-        {glassPanes.map((g, i) => {
-          const fromOffset = new THREE.Vector3(0, 0, -2);
-          const userData = {
-            from: g.pos.clone().add(fromOffset),
-            to: g.pos.clone(),
-            rotFrom: new THREE.Euler(0, 0, 0),
-            rotTo: new THREE.Euler(0, 0, 0),
-          };
-          return (
-            <mesh
-              key={`glass-${i}`}
-              material={glassMat}
-              position={userData.from}
-              userData={userData}
-            >
-              <planeGeometry args={[g.w, g.h]} />
-            </mesh>
-          );
-        })}
-
-        {/* steel reinforcement hint behind frame */}
-        <mesh material={steelMat} position={new THREE.Vector3(0, 0, -D * 0.6)}>
-          <boxGeometry args={[W * 1.02, H * 1.02, 0.02]} />
+      {/* cut face hint (left/right end caps) — subtle darker plane to imply the chambers */}
+      {chambers.map((c, i) => (
+        <mesh
+          key={`chamber-${i}`}
+          position={[w / 2 + 0.001, c.y, c.x * 0.0]}
+          rotation={[0, Math.PI / 2, 0]}
+        >
+          <planeGeometry args={[c.h, 0.05]} />
+          <meshBasicMaterial color={FRAME_DEPTH_COLOR} />
         </mesh>
+      ))}
+    </group>
+  );
+}
 
-        {/* handles */}
-        {[
-          new THREE.Vector3(-W / 4 - T * 0.05 - 0.08, -0.3, D * 0.5),
-          new THREE.Vector3(W / 4 + T * 0.05 + 0.08, -0.3, D * 0.5),
-        ].map((pos, i) => {
-          const fromOffset = new THREE.Vector3(0, -2, 0);
-          const userData = {
-            from: pos.clone().add(fromOffset),
-            to: pos.clone(),
-            rotFrom: new THREE.Euler(0, 0, Math.PI / 2),
-            rotTo: new THREE.Euler(0, 0, Math.PI / 2),
-          };
-          return (
-            <mesh
-              key={`handle-${i}`}
-              material={handleMat}
-              position={userData.from}
-              rotation={userData.rotFrom}
-              userData={userData}
-            >
-              <cylinderGeometry args={[0.04, 0.04, 0.36, 24]} />
-            </mesh>
-          );
-        })}
-      </group>
-    </>
+function MultiChamberPanel({
+  position,
+  size,
+  axis = "horizontal",
+}: ChamberProps & { axis?: "horizontal" | "vertical" }) {
+  const [w, h, d] = size;
+
+  // Render chambers as recessed darker stripes on the front face
+  // axis horizontal => stripes along Y (running left-right)
+  // axis vertical => stripes along X (running up-down)
+  const stripes = useMemo(() => {
+    const out: { offset: number; thickness: number; length: number }[] = [];
+    const span = axis === "horizontal" ? w : h;
+    const length = axis === "horizontal" ? h : w;
+    const count = 5;
+    const stripeT = span * 0.06;
+    const gap = (span - count * stripeT) / (count + 1);
+    for (let i = 0; i < count; i++) {
+      out.push({
+        offset: -span / 2 + gap + stripeT / 2 + i * (stripeT + gap),
+        thickness: stripeT,
+        length: length * 0.78,
+      });
+    }
+    return out;
+  }, [w, h, axis]);
+
+  return (
+    <group position={position}>
+      <mesh castShadow receiveShadow>
+        <boxGeometry args={[w, h, d]} />
+        <meshStandardMaterial
+          color={FRAME_COLOR}
+          roughness={0.5}
+          metalness={0.05}
+        />
+      </mesh>
+
+      {stripes.map((s, i) => {
+        const sx = axis === "horizontal" ? s.thickness : s.length;
+        const sy = axis === "horizontal" ? s.length : s.thickness;
+        const px = axis === "horizontal" ? s.offset : 0;
+        const py = axis === "horizontal" ? 0 : s.offset;
+        return (
+          <mesh
+            key={`stripe-${i}`}
+            position={[px, py, d / 2 + 0.001]}
+          >
+            <planeGeometry args={[sx, sy]} />
+            <meshStandardMaterial
+              color={FRAME_DEPTH_COLOR}
+              roughness={0.65}
+              metalness={0}
+            />
+          </mesh>
+        );
+      })}
+    </group>
+  );
+}
+
+function GlassPanel({
+  position,
+  size,
+  tint = "#dfe7e3",
+  opacity = 0.32,
+}: {
+  position: [number, number, number];
+  size: [number, number, number];
+  tint?: string;
+  opacity?: number;
+}) {
+  return (
+    <mesh position={position} castShadow={false} receiveShadow={false}>
+      <boxGeometry args={size} />
+      <meshPhysicalMaterial
+        color={tint}
+        transparent
+        opacity={opacity}
+        transmission={0.85}
+        thickness={0.4}
+        roughness={0.05}
+        metalness={0}
+        ior={1.5}
+        clearcoat={1}
+        clearcoatRoughness={0.08}
+        attenuationColor="#cfe0d4"
+        attenuationDistance={2}
+      />
+    </mesh>
+  );
+}
+
+export default function WindowFrame3D() {
+  const groupRef = useRef<THREE.Group | null>(null);
+  const targetRot = useRef(new THREE.Vector2());
+
+  const logo = useTexture("/logo.png");
+  logo.colorSpace = THREE.SRGBColorSpace;
+  logo.anisotropy = 8;
+
+  useFrame((state, delta) => {
+    if (!groupRef.current) return;
+    // ease pointer into target rotation
+    targetRot.current.x +=
+      (state.pointer.y * 0.18 - targetRot.current.x) * 0.06;
+    targetRot.current.y +=
+      (state.pointer.x * 0.28 - targetRot.current.y) * 0.06;
+
+    // continuous slow yaw + cursor offset
+    groupRef.current.rotation.y += delta * 0.18;
+    groupRef.current.rotation.y += (targetRot.current.y - 0) * 0.0; // already accumulated above; placeholder
+    groupRef.current.rotation.x = -targetRot.current.x * 0.6 + 0.05;
+
+    // subtle bob
+    groupRef.current.position.y =
+      Math.sin(state.clock.elapsedTime * 0.6) * 0.04 - 0.05;
+  });
+
+  return (
+    <group ref={groupRef} scale={1} position={[0, -0.05, 0]}>
+      {/* Wooden base */}
+      <mesh position={[0, -1.95, 0.15]} receiveShadow>
+        <boxGeometry args={[3.6, 0.16, 1.6]} />
+        <meshStandardMaterial
+          color={WOOD_COLOR}
+          roughness={0.7}
+          metalness={0}
+        />
+      </mesh>
+      <mesh position={[0, -1.87, 0.15]} receiveShadow>
+        <boxGeometry args={[3.6, 0.02, 1.6]} />
+        <meshStandardMaterial
+          color="#a87b4d"
+          roughness={0.6}
+        />
+      </mesh>
+
+      {/* L-shape uPVC frame */}
+      {/* Bottom horizontal sill */}
+      <MultiChamberPanel
+        position={[0, -1.5, 0]}
+        size={[3.0, 0.6, 1.05]}
+        axis="horizontal"
+      />
+
+      {/* Vertical left jamb */}
+      <MultiChamberPanel
+        position={[-1.35, 0, 0]}
+        size={[0.6, 3.4, 1.05]}
+        axis="vertical"
+      />
+
+      {/* Inner sash frame (slightly inset) — gives the recessed look */}
+      <FrameWithChambers
+        position={[-1.05, -0.2, 0.45]}
+        size={[0.18, 2.6, 0.18]}
+      />
+      <FrameWithChambers
+        position={[-0.05, -1.2, 0.45]}
+        size={[2.1, 0.18, 0.18]}
+      />
+
+      {/* Black gasket strips between sash and glass */}
+      <mesh position={[-0.92, -0.2, 0.55]}>
+        <boxGeometry args={[0.05, 2.6, 0.04]} />
+        <meshStandardMaterial color={GASKET_COLOR} roughness={0.85} />
+      </mesh>
+      <mesh position={[-0.05, -1.07, 0.55]}>
+        <boxGeometry args={[2.1, 0.05, 0.04]} />
+        <meshStandardMaterial color={GASKET_COLOR} roughness={0.85} />
+      </mesh>
+
+      {/* Aluminium spacer between glass panes (visible at the edges) */}
+      <mesh position={[-0.02, -1.0, 0.32]}>
+        <boxGeometry args={[2.0, 0.07, 0.4]} />
+        <meshStandardMaterial
+          color={REINFORCEMENT_COLOR}
+          roughness={0.35}
+          metalness={0.7}
+        />
+      </mesh>
+      <mesh position={[-0.85, -0.13, 0.32]}>
+        <boxGeometry args={[0.07, 2.4, 0.4]} />
+        <meshStandardMaterial
+          color={REINFORCEMENT_COLOR}
+          roughness={0.35}
+          metalness={0.7}
+        />
+      </mesh>
+
+      {/* Triple glazed glass panes (back -> front) */}
+      <GlassPanel
+        position={[-0.05, -0.13, -0.05]}
+        size={[2.2, 2.5, 0.04]}
+        tint="#cdd9d2"
+        opacity={0.34}
+      />
+      <GlassPanel
+        position={[0.05, -0.05, 0.18]}
+        size={[2.2, 2.5, 0.04]}
+        tint="#d6e2dd"
+        opacity={0.32}
+      />
+      <GlassPanel
+        position={[0.18, 0.04, 0.42]}
+        size={[2.4, 2.7, 0.04]}
+        tint="#e3ebe5"
+        opacity={0.28}
+      />
+
+      {/* Front lip of glass: thin black trim */}
+      <mesh position={[0.18, 0.04, 0.46]}>
+        <boxGeometry args={[2.42, 2.72, 0.005]} />
+        <meshBasicMaterial color={GASKET_COLOR} transparent opacity={0.0} />
+      </mesh>
+
+      {/* Logo decal on the front face of the bottom horizontal sill */}
+      <mesh position={[0, -1.5, 0.531]}>
+        <planeGeometry args={[1.6, 0.36]} />
+        <meshStandardMaterial
+          map={logo}
+          transparent
+          alphaTest={0.05}
+          roughness={0.4}
+          metalness={0}
+          toneMapped={false}
+        />
+      </mesh>
+
+      {/* Subtle decorative diamond near the bottom right (echoes the reference) */}
+      <mesh position={[1.35, -1.85, 0.25]} rotation={[0, 0, Math.PI / 4]}>
+        <boxGeometry args={[0.06, 0.06, 0.02]} />
+        <meshStandardMaterial
+          color="#ffffff"
+          emissive="#ffffff"
+          emissiveIntensity={0.4}
+          toneMapped={false}
+        />
+      </mesh>
+    </group>
   );
 }
