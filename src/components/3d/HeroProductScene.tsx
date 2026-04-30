@@ -8,7 +8,7 @@ import WindowFrame3D from "./WindowFrame3D";
 export default function HeroProductScene() {
   return (
     <Canvas
-      camera={{ position: [0.6, 0.4, 5.4], fov: 38 }}
+      camera={{ position: [0.4, 0.2, 9.0], fov: 28 }}
       gl={{ antialias: true, alpha: true }}
       dpr={[1, 2]}
       shadows
@@ -34,9 +34,7 @@ export default function HeroProductScene() {
         {/* Environment for reflections on glass and metal spacers */}
         <Environment preset="studio" environmentIntensity={0.55} />
 
-        <group position={[0.1, 0.0, 0]}>
-          <WindowFrame3D />
-        </group>
+        <WindowFrame3D />
       </Suspense>
     </Canvas>
   );

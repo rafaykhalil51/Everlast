@@ -2,7 +2,7 @@
 
 import { useFrame } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 
 const FRAME_COLOR = "#f5f5f1";
@@ -159,28 +159,46 @@ function GlassPanel({
 
 export default function WindowFrame3D() {
   const groupRef = useRef<THREE.Group | null>(null);
-  const targetRot = useRef(new THREE.Vector2());
+  const yawRef = useRef(0); // continuous auto rotation accumulator
+  const easedPointer = useRef(new THREE.Vector2(0, 0));
+  const rawPointer = useRef(new THREE.Vector2(0, 0));
 
   const logo = useTexture("/logo.png");
   logo.colorSpace = THREE.SRGBColorSpace;
   logo.anisotropy = 8;
 
+  // Track pointer at the window level so cursor anywhere on the page
+  // drives the rotation. This avoids the issue of state.pointer only
+  // updating when the cursor is directly over the Canvas element.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onMove = (e: PointerEvent) => {
+      rawPointer.current.x = (e.clientX / window.innerWidth) * 2 - 1;
+      rawPointer.current.y = -((e.clientY / window.innerHeight) * 2 - 1);
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, []);
+
   useFrame((state, delta) => {
     if (!groupRef.current) return;
-    // ease pointer into target rotation
-    targetRot.current.x +=
-      (state.pointer.y * 0.18 - targetRot.current.x) * 0.06;
-    targetRot.current.y +=
-      (state.pointer.x * 0.28 - targetRot.current.y) * 0.06;
 
-    // continuous slow yaw + cursor offset
-    groupRef.current.rotation.y += delta * 0.18;
-    groupRef.current.rotation.y += (targetRot.current.y - 0) * 0.0; // already accumulated above; placeholder
-    groupRef.current.rotation.x = -targetRot.current.x * 0.6 + 0.05;
+    // smoothly ease the pointer into a held value
+    easedPointer.current.x +=
+      (rawPointer.current.x - easedPointer.current.x) * 0.08;
+    easedPointer.current.y +=
+      (rawPointer.current.y - easedPointer.current.y) * 0.08;
 
-    // subtle bob
+    // continuous slow yaw, plus cursor drives extra yaw and tilt
+    yawRef.current += delta * 0.18;
+    groupRef.current.rotation.y =
+      yawRef.current + easedPointer.current.x * 0.7;
+    groupRef.current.rotation.x = -easedPointer.current.y * 0.45 + 0.05;
+
+    // subtle bob, with a small upward baseline so the model sits comfortably
+    // inside the canvas with margin top and bottom
     groupRef.current.position.y =
-      Math.sin(state.clock.elapsedTime * 0.6) * 0.04 - 0.05;
+      Math.sin(state.clock.elapsedTime * 0.6) * 0.04 + 0.25;
   });
 
   return (

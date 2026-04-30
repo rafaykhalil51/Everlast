@@ -133,7 +133,7 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        <div className="lg:col-span-5 relative h-[60vh] md:h-[68vh]" data-cursor="drag">
+        <div className="lg:col-span-5 relative h-[78vh] md:h-[82vh]" data-cursor="drag">
           <div
             className="absolute inset-0 z-0"
             style={{
