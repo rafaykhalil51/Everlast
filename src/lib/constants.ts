@@ -49,26 +49,157 @@ export const PRODUCTS = [
   { id: "feature-door", title: "Europrofil Door", category: "Doors", desc: "Signature designer door with engineered hardware.", image: "/frames/frame_89_delay-0.041s.png" },
 ];
 
-export const CERTIFICATIONS = [
-  { title: "ISO Quality Management", desc: "Documented process control from raw input to finished profile." },
-  { title: "Lead Free Compliance", desc: "Profile chemistry aligned with international safety requirements." },
-  { title: "Weather Performance Testing", desc: "Validated resistance against heat, moisture, UV, and wind load." },
-  { title: "Security and Durability", desc: "Hardware, frame strength, and lifecycle testing for long service." },
+export const CLIENTS = [
+  {
+    name: "FFBL",
+    full: "Fauji Fertilizer Bin Qasim Limited",
+    sector: "Industrial",
+    project: "Industrial campus profile supply, Karachi",
+  },
+  {
+    name: "Staff College Quetta",
+    full: "Pakistan Army Command and Staff College, Quetta",
+    sector: "Defence",
+    project: "Officer accommodation glazing and washroom doors",
+  },
+  {
+    name: "Bahria Town",
+    full: "Bahria Town Pvt. Ltd.",
+    sector: "Real Estate",
+    project: "Phase development uPVC profiles for villas and apartments",
+  },
+  {
+    name: "DHA Karachi",
+    full: "Defence Housing Authority Karachi",
+    sector: "Real Estate",
+    project: "Residential profile supply across multiple phases",
+  },
+  {
+    name: "DHA Islamabad",
+    full: "Defence Housing Authority Islamabad",
+    sector: "Real Estate",
+    project: "Window and door systems for new sectors",
+  },
+  {
+    name: "DHQ Mirpur",
+    full: "DHQ Teaching Hospital, Mirpur, Azad Kashmir",
+    sector: "Healthcare",
+    project: "Hospital wing fenestration with hygiene grade fittings",
+  },
 ];
 
-export const TESTIMONIALS = [
+export const CREDENTIALS = [
   {
-    client: "Aftab Builders",
-    quote: "Excellent profile finish and timely delivery on our residential project.",
+    id: "mes-certificate",
+    title: "MES Enlistment Certificate (Provisional)",
+    issuer: "Engineer-in-Chief's Branch, GHQ Rawalpindi",
+    reference: "Serial No. 600 · Reg DP&W/B/E-3/197/2025",
+    issued: "13 Oct 2025",
+    validUntil: "15 Oct 2026",
+    category: "Bldg",
+    items: ["uPVC Profiles for Windows", "uPVC Washroom Doors"],
+    summary:
+      "Provisional enlistment with the Military Engineer Services covering uPVC profiles and washroom doors under category Bldg, recognised across all MES formations in Pakistan.",
+    image: "/certifications/mes-certificate.png",
+    file: null,
+    accent: "gold",
   },
   {
-    client: "Urban Arch Studio",
-    quote: "The texture options and quality consistency are genuinely impressive.",
+    id: "mes-enlistment-letter",
+    title: "MES Enlistment Letter",
+    issuer: "Directorate of Planning and Works, Engineer-in-Chief's Branch",
+    reference: "Letter No. 2001/Regn/Everlast/DP&W/E3",
+    issued: "October 2025",
+    validUntil: "15 Oct 2026",
+    category: "Distribution to all MES formations",
+    items: [
+      "Distributed to DGW&CE Rawalpindi, Navy, PAF, DP, DCI",
+      "Marked product designation: MES Supply",
+    ],
+    summary:
+      "Official communication confirming enlistment and instructing all MES wings to procure Everlast Plastic uPVC profiles and doors for RTE store and MES building projects.",
+    image: "/certifications/mes-enlistment-letter.png",
+    file: null,
+    accent: "steel",
   },
   {
-    client: "Nexa Homes",
-    quote: "Strong after sales support and durable performance over time.",
+    id: "ntu-test-report",
+    title: "Profile Testing Report",
+    issuer: "National Textile University, Karachi Campus",
+    reference: "Job PD Lab 5436/2236/25 · Report No. 5436/001",
+    issued: "22 Sept 2025",
+    validUntil: null,
+    category: "Independent laboratory verification",
+    items: [
+      "Tested per ASTM, EN, and D-638-03 standards",
+      "RoHS: no hazardous substance detected",
+      "Charpy impact: pass, no crack found",
+    ],
+    summary:
+      "Independent testing of Everlast Plastic uPVC window and door profile panels covering density, impact, thermal, mechanical, weld, and limiting oxygen index properties.",
+    image: "/certifications/ntu-test-report.png",
+    file: "/certifications/profiles-testing-report.pdf",
+    accent: "emerald",
   },
+  {
+    id: "sepa",
+    title: "SEPA Environmental Certificate",
+    issuer: "Sindh Environmental Protection Agency",
+    reference: "Government of Sindh",
+    issued: "2025",
+    validUntil: null,
+    category: "Environmental compliance",
+    items: [
+      "Operational compliance with Sindh environmental standards",
+      "Lead free uPVC compound, RoHS aligned",
+    ],
+    summary:
+      "Environmental compliance certification confirming the manufacturing facility meets the Sindh Environmental Protection Act emission and effluent standards.",
+    image: null,
+    file: "/certifications/sepa-certificate.pdf",
+    accent: "steel",
+  },
+  {
+    id: "secp-incorporation",
+    title: "SECP Certificate of Incorporation",
+    issuer: "Securities and Exchange Commission of Pakistan",
+    reference: "CUIN 0267504",
+    issued: "27 Aug 2024",
+    validUntil: null,
+    category: "Corporate registration",
+    items: [
+      "Incorporated under Companies Act 2017",
+      "Limited by shares",
+      "Verifiable on the SECP LEAP portal",
+    ],
+    summary:
+      "Certified true copy of the SECP incorporation of Everlast Plastic (Private) Limited, registered under the Companies Act 2017 with corporate unique identification number 0267504.",
+    image: null,
+    file: "/certifications/incorporation-letter.pdf",
+    accent: "gold",
+  },
+];
+
+export const NTU_RESULTS: { property: string; value: string; standard?: string }[] = [
+  { property: "Density (g/cm³)", value: "1.46", standard: "ASTM D 792-00" },
+  { property: "Charpy Impact Strength @ 23±2°C", value: "No crack found · Pass", standard: "ASTM 256-05" },
+  { property: "Longitudinal Heat Reversion (%)", value: "0.60" },
+  { property: "Vicat Softening Temperature (°C)", value: "90.00", standard: "ASTM D 1525-00" },
+  { property: "Tensile Strength @ Yield (Kgf/cm²)", value: "329.53", standard: "D-638-03" },
+  { property: "Elongation @ Break (%)", value: "100.21" },
+  { property: "Flexural Modulus of Elasticity (N/mm²)", value: "2250.00", standard: "EN-12608" },
+  { property: "Thermal Conductivity", value: "Low" },
+  { property: "Coefficient of Thermal Expansion (mm/mK)", value: "0.074", standard: "ASTM D696-08" },
+  { property: "RoHS", value: "No hazardous substance detected" },
+  { property: "Weld Strength (Kgf/cm²)", value: "181.36" },
+  { property: "Limiting Oxygen Index (%)", value: "45.00", standard: "ASTM D2863" },
+];
+
+export const CERTIFICATIONS = [
+  { title: "MES Enlisted (Bldg)", desc: "Provisional enlistment with the Military Engineer Services for uPVC profiles and washroom doors." },
+  { title: "Independent Lab Tested", desc: "Profiles tested at National Textile University, Karachi Campus across 12 mechanical, thermal, and chemical properties." },
+  { title: "Lead Free and RoHS Aligned", desc: "Profile chemistry verified free of hazardous substances under independent test." },
+  { title: "SECP Registered", desc: "Incorporated under the Companies Act 2017, CUIN 0267504, on the SECP LEAP register." },
 ];
 
 export type Post = {
