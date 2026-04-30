@@ -155,20 +155,20 @@ export default function CertificationsPage() {
             </p>
             <div className="flex flex-wrap gap-3 mt-2">
               <a
-                href="/certifications/profiles-testing-report.pdf"
+                href="/certifications/ntu-test-report.png"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full bg-[var(--obsidian)] text-[var(--warm-white)] px-6 py-3 text-[12px] font-mono uppercase tracking-[0.24em] hover:bg-[var(--steel)] transition-colors"
               >
-                Open report PDF <span aria-hidden>↗</span>
+                View certificate <span aria-hidden>↗</span>
               </a>
               <a
-                href="/certifications/ntu-test-report.png"
+                href="/certifications/profiles-testing-report.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full border border-black/15 px-6 py-3 text-[12px] font-mono uppercase tracking-[0.24em] text-[var(--obsidian)] hover:border-black/50 transition-colors"
               >
-                View certificate
+                View full report PDF <span aria-hidden>↗</span>
               </a>
             </div>
           </div>
@@ -249,81 +249,81 @@ export default function CertificationsPage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {docs.map((d) => (
-              <article
-                key={d.id}
-                id={d.id}
-                className="scroll-mt-28 group rounded-2xl overflow-hidden border border-white/10 bg-[rgba(255,255,255,0.02)] hover:border-[var(--gold)]/40 transition-colors flex flex-col"
-              >
-                <div className="relative aspect-[4/5] bg-white overflow-hidden">
-                  {d.image ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={d.image}
-                      alt={d.title}
-                      loading="lazy"
-                      className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-700"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-white via-[var(--fog-soft)] to-[var(--fog)] text-[var(--obsidian)]/65 p-6 text-center">
-                      <div className="font-display text-7xl text-[var(--obsidian)]/30">
-                        PDF
-                      </div>
-                      <div className="mt-4 font-mono text-[10px] uppercase tracking-[0.28em]">
-                        Document on file
-                      </div>
-                      <div className="mt-2 font-display text-xl text-[var(--obsidian)]">
-                        {d.title}
-                      </div>
+            {docs.map((d) => {
+              const previewSrc = d.image ?? d.file;
+              const openHref = d.image ?? d.file;
+              return (
+                <article
+                  key={d.id}
+                  id={d.id}
+                  className="scroll-mt-28 group rounded-2xl overflow-hidden border border-white/10 bg-[rgba(255,255,255,0.02)] hover:border-[var(--gold)]/40 transition-colors flex flex-col"
+                >
+                  <div className="relative aspect-[4/5] bg-white overflow-hidden">
+                    {d.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={d.image}
+                        alt={d.title}
+                        loading="lazy"
+                        className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-700"
+                      />
+                    ) : d.file ? (
+                      <iframe
+                        src={`${d.file}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
+                        title={d.title}
+                        loading="lazy"
+                        className="w-full h-full pointer-events-none"
+                      />
+                    ) : null}
+                    <span className="absolute top-3 left-3 rounded-full bg-[var(--obsidian)]/85 text-[var(--warm-white)] px-3 py-1 text-[10px] font-mono uppercase tracking-[0.22em]">
+                      {d.category}
+                    </span>
+                    {previewSrc && (
+                      <a
+                        href={openHref!}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="absolute inset-0 flex items-end justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-t from-black/40 via-transparent to-transparent"
+                        aria-label={`View ${d.title}`}
+                      >
+                        <span className="rounded-full bg-[var(--gold)] text-[var(--obsidian)] px-3 py-1 text-[10px] font-mono uppercase tracking-[0.22em]">
+                          Open ↗
+                        </span>
+                      </a>
+                    )}
+                  </div>
+
+                  <div className="p-6 flex-1 flex flex-col gap-3">
+                    <h3 className="font-display text-2xl leading-[1.15]">{d.title}</h3>
+                    <div className="text-[12px] text-[var(--warm-white)]/65 leading-5">
+                      {d.issuer}
                     </div>
-                  )}
-                  <span className="absolute top-3 left-3 rounded-full bg-[var(--obsidian)]/85 text-[var(--warm-white)] px-3 py-1 text-[10px] font-mono uppercase tracking-[0.22em]">
-                    {d.category}
-                  </span>
-                </div>
+                    <div className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--gold)] break-words">
+                      {d.reference}
+                    </div>
+                    <p className="text-[var(--warm-white)]/75 text-sm leading-6">
+                      {d.summary}
+                    </p>
 
-                <div className="p-6 flex-1 flex flex-col gap-3">
-                  <h3 className="font-display text-2xl leading-[1.15]">{d.title}</h3>
-                  <div className="text-[12px] text-[var(--warm-white)]/65 leading-5">
-                    {d.issuer}
-                  </div>
-                  <div className="font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--gold)] break-words">
-                    {d.reference}
-                  </div>
-                  <p className="text-[var(--warm-white)]/75 text-sm leading-6">
-                    {d.summary}
-                  </p>
+                    <div className="flex items-center justify-between text-[11px] font-mono uppercase tracking-[0.22em] text-[var(--fog)] mt-1">
+                      <span>Issued {d.issued}</span>
+                      {d.validUntil ? <span>Valid {d.validUntil}</span> : <span>On file</span>}
+                    </div>
 
-                  <div className="flex items-center justify-between text-[11px] font-mono uppercase tracking-[0.22em] text-[var(--fog)] mt-1">
-                    <span>Issued {d.issued}</span>
-                    {d.validUntil ? <span>Valid {d.validUntil}</span> : <span>On file</span>}
-                  </div>
-
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {d.image && (
+                    {openHref && (
                       <a
-                        href={d.image}
+                        href={openHref}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-4 py-2 text-[11px] font-mono uppercase tracking-[0.22em] text-[var(--warm-white)]/85 hover:border-[var(--gold)] hover:text-[var(--gold)] transition-colors"
+                        className="mt-2 inline-flex w-fit items-center gap-1.5 rounded-full border border-white/15 px-4 py-2 text-[11px] font-mono uppercase tracking-[0.22em] text-[var(--warm-white)]/85 hover:border-[var(--gold)] hover:text-[var(--gold)] transition-colors"
                       >
-                        View image <span aria-hidden>↗</span>
-                      </a>
-                    )}
-                    {d.file && (
-                      <a
-                        href={d.file}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 rounded-full bg-[var(--gold)] text-[var(--obsidian)] px-4 py-2 text-[11px] font-mono uppercase tracking-[0.22em] hover:bg-[var(--gold-light)] transition-colors"
-                      >
-                        Download PDF <span aria-hidden>↓</span>
+                        View document <span aria-hidden>↗</span>
                       </a>
                     )}
                   </div>
-                </div>
-              </article>
-            ))}
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>

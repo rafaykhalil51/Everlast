@@ -11,6 +11,14 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
+  // Routes whose top section is light (white/cream). On these, the navbar
+  // must always show a solid dark background so the white nav text remains
+  // readable, regardless of scroll position.
+  const lightHeroRoute =
+    pathname.startsWith("/legal") || /^\/blog\/[^/]+/.test(pathname);
+
+  const solidBg = scrolled || lightHeroRoute;
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
     onScroll();
@@ -42,8 +50,8 @@ export default function Navbar() {
       >
         <div
           className={`transition-all duration-500 ${
-            scrolled
-              ? "bg-[rgba(13,13,13,0.55)] backdrop-blur-xl border-b border-white/5"
+            solidBg
+              ? "bg-[rgba(13,13,13,0.78)] backdrop-blur-xl border-b border-white/5"
               : "bg-transparent"
           }`}
         >
