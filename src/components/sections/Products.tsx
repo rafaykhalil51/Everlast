@@ -117,18 +117,17 @@ export default function Products() {
               Featured
             </div>
             <h3 className="mt-2 font-display text-3xl md:text-4xl">
-              Europrofil Door System — open new possibilities.
+              Step Into the Future of Modern UPVC Living
             </h3>
             <p className="mt-4 text-[var(--warm-white)]/70 max-w-xl leading-7">
-              Engineered hardware, multi-point locking, soundproof sealing and a polished
-              interior finish — designed to elevate every entrance.
+              Explore our premium showroom collection of UPVC doors, windows, and gates designed for performance and elegance.
             </p>
           </div>
-          <div className="lg:col-span-5 relative aspect-square max-lg:aspect-[4/3] rounded-2xl overflow-hidden">
+          <div className="lg:col-span-5 relative w-full aspect-[2/3] max-w-md mx-auto lg:max-w-none lg:mx-0 rounded-2xl overflow-hidden">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/featured-living-room.jpg"
-              alt="Bright living space with expansive uPVC windows"
+              src="/featured-modern-exterior.jpg"
+              alt="Modern two-storey home with large glass doors and balcony"
               className="absolute inset-0 w-full h-full object-cover object-center"
             />
           </div>
