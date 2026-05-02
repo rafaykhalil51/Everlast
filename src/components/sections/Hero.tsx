@@ -57,19 +57,13 @@ export default function Hero() {
               className="inline-flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--gold)]"
             >
               <span className="inline-block w-8 h-px bg-[var(--gold)]" />
-              European uPVC Solutions
+              Advanced uPVC Solutions
             </motion.div>
 
             <h1 className="font-display text-[clamp(3rem,9vw,8rem)] leading-[0.92] tracking-tight">
               <span className="block overflow-hidden">
                 <motion.span variants={wordReveal} className="inline-block">
-                  Engineer
-                </motion.span>
-              </span>
-
-              <span className="block overflow-hidden">
-                <motion.span variants={wordReveal} className="inline-block">
-                  your{" "}
+                  Bringing{" "}
                   <span
                     className="inline-block"
                     style={{
@@ -77,14 +71,14 @@ export default function Hero() {
                       color: "transparent",
                     }}
                   >
-                    perfect
+                    elegance
                   </span>
                 </motion.span>
               </span>
 
               <span className="block overflow-hidden">
                 <motion.span variants={wordReveal} className="inline-block">
-                  space.
+                  into your home
                 </motion.span>
               </span>
             </h1>
@@ -93,8 +87,8 @@ export default function Hero() {
               variants={wordReveal}
               className="max-w-xl text-[var(--warm-white)]/70 text-base md:text-lg leading-7"
             >
-              {COMPANY.name} — premium uPVC windows and doors built with European
-              engineering. Crafted for durability, energy efficiency, and architectural elegance.
+              {COMPANY.name} — premium uPVC windows and doors engineered with
+              cutting-edge Chinese technology. Crafted for durability, energy efficiency, and architectural elegance.
             </motion.p>
 
             <motion.div variants={wordReveal} className="flex flex-wrap items-center gap-4 pt-4">
@@ -106,7 +100,7 @@ export default function Hero() {
                 <span aria-hidden>→</span>
               </a>
               <a
-                href="#gallery"
+                href="/gallery"
                 className="inline-flex items-center gap-2 rounded-full border border-white/15 px-7 py-3 text-[12px] font-mono uppercase tracking-[0.24em] text-[var(--warm-white)]/85 hover:border-white/40 hover:text-white transition-colors"
               >
                 Gallery

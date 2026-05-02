@@ -40,13 +40,20 @@ export const STATS = [
   { value: 10, suffix: "yr", label: "Performance warranty" },
 ];
 
-export const PRODUCTS = [
-  { id: "sliding-door", title: "Sliding Door", category: "Doors", desc: "Smooth glide profiles with weatherproof sealing.", image: "/frames/frame_10_delay-0.041s.png" },
-  { id: "sliding-window", title: "Sliding Window", category: "Windows", desc: "Space saving systems built for insulation and durability.", image: "/frames/frame_24_delay-0.041s.png" },
-  { id: "openable-door", title: "Openable Door", category: "Doors", desc: "Strong hinges, locking options, and acoustic comfort.", image: "/frames/frame_40_delay-0.041s.png" },
-  { id: "openable-window", title: "Openable Window", category: "Windows", desc: "Ventilation focused, tight closure, low maintenance.", image: "/frames/frame_57_delay-0.041s.png" },
-  { id: "fixed", title: "Fixed Lite", category: "Fixed", desc: "Frameless aesthetics with maximum daylight admission.", image: "/frames/frame_73_delay-0.041s.png" },
-  { id: "feature-door", title: "Europrofil Door", category: "Doors", desc: "Signature designer door with engineered hardware.", image: "/frames/frame_89_delay-0.041s.png" },
+export const PRODUCTS: {
+  id: string;
+  title: string;
+  category: "Doors" | "Windows" | "Fixed";
+  desc: string;
+  image: string;
+  hero?: boolean;
+  enhance?: boolean;
+}[] = [
+  { id: "feature-door",    title: "Europrofil Door", category: "Doors",   desc: "Signature designer door with engineered hardware.",         image: "/products/europrofil-door.jpg", hero: true                  },
+  { id: "sliding-door",    title: "Sliding Door",    category: "Doors",   desc: "Smooth glide profiles with weatherproof sealing.",          image: "/products/sliding-door.jpg",    enhance: true              },
+  { id: "sliding-window",  title: "Sliding Window",  category: "Windows", desc: "Space-saving systems built for insulation and durability.", image: "/products/sliding-window.jpg"                              },
+  { id: "openable-door",   title: "Openable Door",   category: "Doors",   desc: "Strong hinges, locking options, and acoustic comfort.",     image: "/products/openable-door.jpg"                               },
+  { id: "openable-window", title: "Openable Window", category: "Windows", desc: "Ventilation-focused, tight closure, low maintenance.",      image: "/products/openable-window.jpg"                             },
 ];
 
 export const CLIENTS = [

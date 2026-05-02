@@ -7,7 +7,7 @@ import SectionLabel from "@/components/ui/SectionLabel";
 import AnimatedText from "@/components/ui/AnimatedText";
 import { fadeUp } from "@/lib/animations";
 
-const TABS = ["All", "Windows", "Doors", "Fixed"] as const;
+const TABS = ["All", "Windows", "Doors"] as const;
 type Tab = (typeof TABS)[number];
 
 export default function Products() {
@@ -52,41 +52,56 @@ export default function Products() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-10% 0px" }}
-          className="mt-12 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 auto-rows-[200px] gap-4"
+          className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5"
         >
           <AnimatePresence>
-            {filtered.map((p, i) => (
-              <motion.a
-                key={p.id}
-                href={`#${p.id}`}
-                layout
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.5, delay: 0.04 * i, ease: [0.16, 1, 0.3, 1] }}
-                className={`group relative overflow-hidden rounded-2xl border border-white/8 ${
-                  i % 5 === 0 ? "row-span-2" : ""
-                } ${i % 7 === 1 ? "md:col-span-2" : ""}`}
-                data-cursor="hover"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={p.image}
-                  alt={p.title}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-5 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                  <div className="font-mono text-[10px] uppercase tracking-[0.28em] text-[var(--gold)]">
-                    {p.category}
+            {filtered.map((p, i) => {
+              const heroSpan = p.hero ? "col-span-2 row-span-2" : "";
+              return (
+                <motion.a
+                  key={p.id}
+                  href={`#${p.id}`}
+                  layout
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.5, delay: 0.05 * i, ease: [0.16, 1, 0.3, 1] }}
+                  className={`group relative aspect-square overflow-hidden rounded-2xl border border-white/8 bg-[#0b0b0c] ${heroSpan}`}
+                  data-cursor="hover"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={p.image}
+                    alt={p.title}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+                    style={p.enhance ? { filter: "contrast(1.15) saturate(1.12) brightness(1.06)" } : undefined}
+                  />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
+
+                  {/* hairline frame on hover */}
+                  <div className="absolute inset-0 ring-1 ring-inset ring-white/0 group-hover:ring-[var(--gold)]/40 transition-[box-shadow,ring] duration-500 rounded-2xl pointer-events-none" />
+
+                  <div className={`absolute inset-x-0 bottom-0 ${p.hero ? "p-7" : "p-5"} translate-y-1 group-hover:translate-y-0 transition-transform duration-500`}>
+                    <div className="font-mono text-[10px] uppercase tracking-[0.28em] text-[var(--gold)]">
+                      {p.category}
+                    </div>
+                    <div className={`mt-1 font-display ${p.hero ? "text-2xl md:text-4xl" : "text-lg md:text-xl"}`}>
+                      {p.title}
+                    </div>
+                    <div className="mt-1 text-[var(--warm-white)]/75 text-sm max-h-0 overflow-hidden group-hover:max-h-24 transition-[max-height] duration-500">
+                      {p.desc}
+                    </div>
                   </div>
-                  <div className="mt-1 font-display text-xl md:text-2xl">{p.title}</div>
-                  <div className="mt-1 text-[var(--warm-white)]/75 text-sm max-h-0 overflow-hidden group-hover:max-h-20 transition-[max-height] duration-500">
-                    {p.desc}
+
+                  <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/0 group-hover:bg-white/10 border border-white/0 group-hover:border-white/30 backdrop-blur-sm transition-all duration-500 flex items-center justify-center">
+                    <svg className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+                    </svg>
                   </div>
-                </div>
-              </motion.a>
-            ))}
+                </motion.a>
+              );
+            })}
           </AnimatePresence>
         </motion.div>
 
@@ -109,12 +124,12 @@ export default function Products() {
               interior finish — designed to elevate every entrance.
             </p>
           </div>
-          <div className="lg:col-span-5 relative aspect-[4/3] rounded-2xl overflow-hidden">
+          <div className="lg:col-span-5 relative aspect-square max-lg:aspect-[4/3] rounded-2xl overflow-hidden">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/frames/frame_70_delay-0.041s.png"
-              alt="Featured door system"
-              className="absolute inset-0 w-full h-full object-cover"
+              src="/featured-living-room.jpg"
+              alt="Bright living space with expansive uPVC windows"
+              className="absolute inset-0 w-full h-full object-cover object-center"
             />
           </div>
         </motion.div>

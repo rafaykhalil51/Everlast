@@ -24,12 +24,12 @@ export default function About() {
           viewport={{ once: true, margin: "-15% 0px" }}
           variants={slideFromLeft}
         >
-          <div className="relative aspect-[4/5] w-full rounded-3xl overflow-hidden border border-black/5">
+          <div className="relative aspect-[2/3] w-full rounded-3xl overflow-hidden border border-black/5">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/frames/frame_30_delay-0.041s.png"
-              alt="Everlast Plastic uPVC craftsmanship"
-              className="w-full h-full object-cover"
+              src="/about-living-space.jpg"
+              alt="Bright living room with large glass doors and curated interior"
+              className="w-full h-full object-cover object-center"
               loading="lazy"
             />
             <span className="absolute top-4 left-4 w-8 h-px bg-[var(--gold)]" />
