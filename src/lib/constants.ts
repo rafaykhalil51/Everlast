@@ -49,7 +49,7 @@ export const PRODUCTS: {
   hero?: boolean;
   enhance?: boolean;
 }[] = [
-  { id: "feature-door",    title: "Europrofil Door", category: "Doors",   desc: "Signature designer door with engineered hardware.",         image: "/products/europrofil-door.jpg", hero: true                  },
+  { id: "feature-door",    title: "Elegant Upvc Door", category: "Doors",   desc: "Signature designer door with engineered hardware.",         image: "/products/europrofil-door.jpg", hero: true                  },
   { id: "sliding-door",    title: "Sliding Door",    category: "Doors",   desc: "Smooth glide profiles with weatherproof sealing.",          image: "/products/sliding-door.jpg",    enhance: true              },
   { id: "sliding-window",  title: "Sliding Window",  category: "Windows", desc: "Space-saving systems built for insulation and durability.", image: "/products/sliding-window.jpg"                              },
   { id: "openable-door",   title: "Openable Door",   category: "Doors",   desc: "Strong hinges, locking options, and acoustic comfort.",     image: "/products/openable-door.jpg"                               },
